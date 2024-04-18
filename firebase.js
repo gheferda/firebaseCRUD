@@ -26,7 +26,9 @@ const todosInDB = ref(database, "todoList")
 
 const todoForm = document.getElementById("todo-form")
 const inputField = document.getElementById("input")
+const submitBtn = document.getElementById("submit-btn")
 const todoList = document.getElementById("todo-list")
+const listItem = document.getElementById("list-item")
 
 /*ADD TODO TO FIREBASE*/
 todoForm.addEventListener("submit", function(e) {
@@ -44,6 +46,7 @@ todoForm.addEventListener("submit", function(e) {
   }
 });
 
+/*FETCH DATA FROM REALTIMEDB*/
 const fetchData = () => {
   /*FETCH DATA USING ONVALUE*/
 onValue(todosInDB, function(snapshot){
@@ -73,33 +76,56 @@ onValue(todosInDB, function(snapshot){
 
 /*VIEW REALTIMEDB FROM FIREBASE*/
 const viewList = (item) => {
-  /*todoList.innerHTML += 
-  `<li>${todo}</li>`*/
   let itemId = item[0]
   let itemValue = item[1]
-  let li = document.createElement("li")
+  
+  let li = document.createElement("textarea")
   li.textContent = itemValue
+  li.className = "form-control"
+  li.disabled = true
+  
   let del = document.createElement("button")
-  del.textContent = "DELETE"
+  del.className = "btn btn-outline-secondary"
+  del.textContent = "x"
+  
+  let upd = document.createElement("button")
+  upd.className = "btn btn-outline-success"
+  upd.textContent = "✓"
+  
+  let check = document.createElement("input")
+  check.className = "form-check-input"
+  check.type = "checkbox"
+  check.value = ""
+  check.classId = "flexCheckDefault"
+  
+  
   let div = document.createElement("div")
+  div.className = "input-group"
+  div.append(li,del,upd,check)
+  todoList.append(div)
   
   /*DEL DATA ON REALTIMEDB*/
   del.addEventListener("click", function(){
   let todosInDBexact = ref(database, `todoList/${itemId}`)
-    
     remove(todosInDBexact)
     //console.log(todosInDBexact)
-  })
-  
-  div.append(li, del)
-  todoList.append(div)
-}
-/*CREATE LI ELEMENT*/
-const creatEl = (todo) => {
-  let li = document.createElement("li")
-      li.textContent = todo
-      todoList.appendChild(li)
-};
+  });
+  check.addEventListener("click", function(){
+    let yes = check
+    if(yes.checked==true){
+      li.disabled = false
+    }else{
+      li.disabled = true
+    }
+  });
+  /*html.innerHTML += `
+  <div>
+    <p>${div}</p>
+  </div>
+  `*/
+}/*END OF VIEW LIST*/
+
+
 function clearList() {
   todoList.innerHTML = ""
 };
