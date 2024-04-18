@@ -1,10 +1,20 @@
-#todo-list {
-  list-style: none;
+.container {
   text-align: center;
 }
-div {
-  display: flex;
-  gap: 0px 5px;
-  padding: 10px;
-  background-color: #debc9d;
+form {
+  
+}
+ul {
+  margin: 16px auto;
+  padding: 16px;
+  
+}
+ul li {
+  
+}
+.input-group {
+  margin: 16px 0px;
+}
+.form-control:disabled {
+  /*disabled: true;*/
 }
